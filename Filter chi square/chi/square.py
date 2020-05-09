@@ -3,7 +3,7 @@ import numpy as np
 
 import pandas as pd
 
-
+#list = array (indexnya 0,1,2, dst) tdk menentukan indexnya di awal, dict = hashmap ('a') harus mengisi key nya
 def data_separate(y, complement=False):
     kelas = sorted(set(y))
     dict_index = dict()
@@ -48,6 +48,7 @@ class ChiSquare:
         self.classes = list(set(label))
 
         self.dict_chis = {"fitur":self.fitur}
+        #fitur adalah key, self.fitur (isinya) berasal dr ln 44 mengambil semua fitur
         # for c_ in list(reversed(self.classes)):
         for c_ in self.classes:
             A = np.sum(X[index_doc[c_]], axis=0).A
@@ -64,12 +65,16 @@ class ChiSquare:
             x_pangkat2 = atas/bawah
             # print(atas, bawah)
             self.dict_chis.update({c_:list(x_pangkat2[0])})
+            #memasukkan hasil perhitungan untuk setiap kelas disimpan dalam dict dimana key nya adalah kelasnya (c_)
+            #kalo di pyton berbasis objec, object akan bicara memory
             # print(A, B, C, D, "| ")
             # print("=================================================")
         self.best_features = list()
-        nk = self.nilai_kritis[self.alpha]
+        nk = self.nilai_kritis[self.alpha] #Ini adalah implemenasi dari dictionary
         # print(self.dict_chis[self.classes[0]])
         for term, sp, nsp in zip(self.fitur, self.dict_chis[self.classes[0]], self.dict_chis[self.classes[1]]):
+            #akan dicek satu per satu fitur
+            #zip --> menyatukan beberapa list atau array, classes[0] adalah spam -> mengambil data chisquare utk kelas spam, classes[1] adalah nonspam
             # print(sp, nsp)
             if sp>=nk or nsp>=nk:
                 self.best_features.append(term)
